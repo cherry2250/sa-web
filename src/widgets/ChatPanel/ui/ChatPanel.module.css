@@ -1,0 +1,74 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #131313;
+  color: #fff;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 9999px;
+}
+.tab {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tabActive {
+  background: #fff;
+  color: #000;
+}
+.menuBtn {
+  color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.menuBtn:hover {
+  color: #fff;
+}
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow-y: auto;
+}
+.logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px auto;
+  color: rgba(255, 255, 255, 0.7);
+}
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.highlight {
+  color: #a78bfa;
+}
+.desc {
+  color: #aaa;
+  max-width: 600px;
+  margin: 0 auto 48px auto;
+}
