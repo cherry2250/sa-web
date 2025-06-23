@@ -2,12 +2,48 @@
 import React, { useState } from "react";
 import styles from "./ChatPanel.module.css";
 import { ChatInput } from "@/features/ChatInput";
-import { LogoIcon, MenuIcon } from "@/shared/assets/icons";
+import { LogoIcon } from "@/shared/assets/icons";
+import { sendAgentMessage } from "@/shared/lib/aiAgentApi";
 
-const TABS = ["General", "Sales", "Negotiation", "Marketing"];
+const apiKey = "app-kp12R0vDySbir5GhcEexZm2m";
+const user = "test1234";
 
 export const ChatPanel = () => {
   const [activeTab, setActiveTab] = useState("General");
+  const [messages, setMessages] = useState<
+    { role: "user" | "ai"; text: string }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleSend = async (message: string) => {
+    setMessages((prev) => [...prev, { role: "user", text: message }]);
+    setLoading(true);
+
+    console.log("📨 handleSend called with:", message);
+
+    try {
+      const res = await sendAgentMessage(apiKey, {
+        query: message,
+        user,
+        conversation_id: "",
+        response_mode: "streaming",
+        files: [],
+        inputs: {},
+      });
+      if (res && res.result) {
+        setMessages((prev) => [...prev, { role: "ai", text: res.result }]);
+      } else {
+        setMessages((prev) => [...prev, { role: "ai", text: res.result }]);
+      }
+    } catch (e) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", text: "에러가 발생했습니다.222" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.panel}>
@@ -24,9 +60,24 @@ export const ChatPanel = () => {
             and start your conversation with ease.
           </p>
         </div>
-      </main>
 
-      <ChatInput />
+        <div style={{ margin: "32px auto", maxWidth: 600 }}>
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              style={{
+                textAlign: msg.role === "user" ? "right" : "left",
+                margin: "8px 0",
+                color: msg.role === "user" ? "#a78bfa" : "#fff",
+              }}
+            >
+              {msg.text}
+            </div>
+          ))}
+          {loading && <div style={{ color: "#aaa" }}>AI 응답 중...</div>}
+        </div>
+      </main>
+      <ChatInput onSend={handleSend} />
     </div>
   );
 };

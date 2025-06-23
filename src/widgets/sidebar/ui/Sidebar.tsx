@@ -3,7 +3,7 @@ import styles from "./Sidebar.module.css";
 export const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.logo}>Negotio</div>
+      <div className={styles.logo}>SA-WEB</div>
       <button className={styles.newChatButton}>+ Begin a New Chat</button>
       <input className={styles.search} placeholder="Search" />
 
