@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
+import "highlight.js/styles/atom-one-dark.css";
 
 const apiKey = "app-kp12R0vDySbir5GhcEexZm2m";
 const user = "test1234";

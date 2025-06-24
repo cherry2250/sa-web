@@ -12,11 +12,20 @@
   box-sizing: border-box;
 }
 
-.logo {
-  font-size: 17px;
-  font-weight: 700;
-  color: #b388ff;
+.logoTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 24px;
+  color: #b388ff;
+}
+.logo {
+  width: 32px;
+  height: 32px;
+}
+.title {
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .newChatButton {
