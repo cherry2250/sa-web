@@ -12,7 +12,6 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
 
   const handleSend = (value: string) => {
     if (!value.trim()) return;
-    console.log("🚀 ChatInput handleSend called:", value);
     onSend(value);
     setInput("");
   };

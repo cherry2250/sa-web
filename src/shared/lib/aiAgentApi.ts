@@ -15,58 +15,65 @@ export type ChatResponse = {
   // 실제 응답 구조에 맞게 타입 정의
   result: string;
 };
-export async function sendAgentMessage(
+
+export async function sendAgentMessageStreaming(
   apiKey: string,
-  body: ChatRequest
-): Promise<ChatResponse> {
-  const response = await fetch("https://api.abclab.ktds.com/v1/chat-messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
-  });
+  body: any,
+  onMessage: (answer: string) => void,
+  onEnd?: () => void,
+  onError?: (err: any) => void
+) {
+  try {
+    console.log("bpdy ", JSON.stringify(body));
+    const response = await fetch(
+      "https://api.abclab.ktds.com/v1/chat-messages",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("❌ API 응답 실패:", response.status, errorText);
-    throw new Error("AI Agent API Error");
-  }
+    if (!response.body) throw new Error("No response body");
 
-  // ✅ 스트리밍 응답 파싱
-  const reader = response.body?.getReader();
-  const decoder = new TextDecoder("utf-8");
-  let result = "";
+    const reader = response.body.getReader();
+    let aiMessage = "";
+    let done = false;
 
-  if (!reader) {
-    throw new Error("No readable stream found");
-  }
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    const chunk = decoder.decode(value, { stream: true });
-
-    // 각 줄마다 분리해서 처리 (SSE: data: {...})
-    const lines = chunk.split("\n");
-    for (const line of lines) {
-      if (line.startsWith("data: ")) {
-        const json = line.replace("data: ", "").trim();
-        if (json === "[DONE]") break;
-
-        try {
-          const parsed = JSON.parse(json);
-          if (parsed?.text) {
-            result += parsed.text; // 🔧 스트리밍된 텍스트 모으기
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      if (value) {
+        const chunk = new TextDecoder().decode(value);
+        const lines = chunk.split("\n\n").filter(Boolean);
+        for (const line of lines) {
+          if (line.startsWith("data:")) {
+            const jsonStr = line.replace(/^data:\s*/, "");
+            if (jsonStr.trim() === "[DONE]") continue;
+            try {
+              const eventObj = JSON.parse(jsonStr);
+              if (eventObj.conversation_id) {
+                console.log("대화 ID:", eventObj.conversation_id);
+                // 필요하다면 상태로 저장해서 다음 요청에 사용
+              }
+              if (eventObj.event === "message" && eventObj.answer) {
+                aiMessage += eventObj.answer;
+                onMessage(aiMessage);
+              }
+              if (eventObj.event === "message_end" && onEnd) {
+                onEnd();
+              }
+            } catch (e) {
+              // JSON 파싱 에러 무시
+            }
           }
-        } catch (e) {
-          console.warn("⚠️ JSON 파싱 실패:", json);
         }
       }
     }
+  } catch (err) {
+    if (onError) onError(err);
   }
-
-  return { result };
 }

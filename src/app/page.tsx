@@ -4,7 +4,7 @@ import { ChatPanel } from "@/widgets/ChatPanel/ui/ChatPanel";
 export default function Home() {
   return (
     <div>
-      <ChatPanel />;
+      <ChatPanel />
     </div>
   );
 }
