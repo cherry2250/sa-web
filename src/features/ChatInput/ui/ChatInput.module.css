@@ -1,48 +1,79 @@
 .inputWrap {
-  position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 16px;
-}
-.input {
-  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 24px;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  padding: 16px 48px 16px 48px;
-  color: #fff;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
+
+.inputContainer {
+  flex: 1;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #4a4a4a;
+  border-radius: 9999px;
+  padding: 16px 24px 16px 60px; /* Left padding for icon */
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #a855f7;
+}
+
 .iconBtn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.2s;
+  color: #a0a0a0;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .iconBtn:hover {
   color: #fff;
 }
+
 .leftIcon {
-  left: 12px;
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
 }
+
 .rightIcons {
   right: 12px;
   display: flex;
   gap: 8px;
 }
+
 .sendBtn {
-  background: #9333ea;
-  border-radius: 9999px;
-  padding: 8px;
+  background: #a855f7;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
-  margin-left: 8px;
-  transition: background 0.2s;
   border: none;
   cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
+
 .sendBtn:hover {
-  background: #7c2ae8;
+  background: #9333ea;
 }

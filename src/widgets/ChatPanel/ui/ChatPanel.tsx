@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 import styles from "./ChatPanel.module.css";
 import { ChatInput } from "@/features/ChatInput";
 import { LogoIcon } from "@/shared/assets/icons";
@@ -66,7 +67,9 @@ export const ChatPanel = () => {
       <main className={styles.main}>
         {messages.length === 0 ? (
           <div className={styles.centerArea}>
-            <LogoIcon className={styles.logo} />
+            <Link href="/">
+              <LogoIcon className={styles.logo} />
+            </Link>
             <h2 className={styles.title}>
               How can we <span className={styles.highlight}>assist</span> you
               today?

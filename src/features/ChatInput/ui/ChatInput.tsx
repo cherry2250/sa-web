@@ -26,35 +26,31 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
 
   return (
     <div className={styles.inputWrap}>
-      {/* <button className={`${styles.iconBtn} ${styles.leftIcon}`} tabIndex={-1}>
-        <PaperClipIcon width={20} height={20} />
-      </button> */}
-      <input
-        type="text"
-        placeholder="type your prompt here"
-        className={styles.input}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      {/* <div className={styles.rightIcons}>
-        <button className={styles.iconBtn} tabIndex={-1}>
-          <MicIcon width={20} height={20} />
-        </button>
+      <div className={styles.inputContainer}>
         <button
-          className={styles.sendBtn}
-          onClick={(e) => {
-            e.preventDefault();
-            handleSend(input);
-          }}
+          className={`${styles.iconBtn} ${styles.leftIcon}`}
+          tabIndex={-1}
         >
-          <SendIcon
-            width={20}
-            height={20}
-            style={{ transform: "rotate(-45deg)" }}
-          />
+          <PaperClipIcon width={24} height={24} />
         </button>
-      </div> */}
+        <input
+          type="text"
+          placeholder="type your prompt here"
+          className={styles.input}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+      <button
+        className={styles.sendBtn}
+        onClick={(e) => {
+          e.preventDefault();
+          handleSend(input);
+        }}
+      >
+        <SendIcon width={24} height={24} />
+      </button>
     </div>
   );
 };

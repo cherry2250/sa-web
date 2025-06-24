@@ -1,25 +1,21 @@
 import { LogoIcon } from "@/shared/assets/icons";
 import styles from "./Sidebar.module.css";
+import Link from "next/link";
 
 export const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.logoTitleRow}>
-        <LogoIcon className={styles.logo} />
-        <span className={styles.title}>SA-WEB</span>
-      </div>
+      <a href={"/"}>
+        <div className={styles.logoTitleRow}>
+          <LogoIcon className={styles.logo} />
+          <span className={styles.title}>SA-WEB</span>
+        </div>
+      </a>
       <button className={styles.newChatButton}>+ Begin a New Chat</button>
       <input className={styles.search} placeholder="Search" />
-
-      <div className={styles.categoryList}>
-        <div className={styles.categoryItem}>General</div>
-        <div className={styles.categoryItem}>Sales</div>
-        <div className={styles.categoryItem}>Negotiation</div>
-        <div className={styles.categoryItem}>Marketing</div>
-      </div>
-
+      <hr></hr>
       <div className={styles.recentChats}>
-        <div className={styles.chatItem}>How can I increase the...</div>
+        <div className={styles.chatItem}>최근 대화 이력</div>
         <div className={styles.chatItem}>What’s the best approach...</div>
       </div>
 
