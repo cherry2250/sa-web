@@ -1,9 +1,15 @@
+import { LogoIcon } from "@/shared/assets/icons";
 import styles from "./Sidebar.module.css";
 
 export const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.logo}>SA-WEB</div>
+      <div className={styles.logo}>
+        <span>
+          <LogoIcon className={styles.logo} />
+        </span>
+        <span>SA-WEB</span>
+      </div>
       <button className={styles.newChatButton}>+ Begin a New Chat</button>
       <input className={styles.search} placeholder="Search" />
 

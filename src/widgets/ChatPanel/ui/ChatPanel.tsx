@@ -1,9 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styles from "./ChatPanel.module.css";
 import { ChatInput } from "@/features/ChatInput";
 import { LogoIcon } from "@/shared/assets/icons";
 import { sendAgentMessageStreaming } from "@/shared/lib/aiAgentApi";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github.css";
 
 const apiKey = "app-kp12R0vDySbir5GhcEexZm2m";
 const user = "test1234";
@@ -14,6 +18,13 @@ export const ChatPanel = () => {
     { role: "user" | "ai"; text: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const messageListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
 
   const handleSend = (message: string) => {
     setMessages((prev) => [...prev, { role: "user", text: message }]);
@@ -24,7 +35,7 @@ export const ChatPanel = () => {
       {
         query: message,
         user,
-        conversation_id: "daf68fdf-95d0-4e8b-96a9-bef7910c6504",
+        conversation_id: "",
         response_mode: "streaming",
         files: [],
         inputs: {},
@@ -60,13 +71,11 @@ export const ChatPanel = () => {
               today?
             </h2>
             <p className={styles.desc}>
-              Get expert guidance powered by AI agents specializing in Sales,
-              Marketing, and Negotiation. Choose the agent that suits your needs
-              and start your conversation with ease.
+              어떤 도움이 필요하신가요? 궁금한 부분을 질문해주세요!
             </p>
           </div>
         ) : (
-          <div className={styles.messageList}>
+          <div className={styles.messageList} ref={messageListRef}>
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -74,7 +83,26 @@ export const ChatPanel = () => {
                   msg.role === "user" ? styles.userMessage : styles.aiMessage
                 }
               >
-                {msg.text}
+                {msg.role === "ai" ? (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeHighlight]}
+                    components={{
+                      code(props) {
+                        const { children, className, ...rest } = props;
+                        return (
+                          <code className={className} {...rest}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                ) : (
+                  msg.text
+                )}
               </div>
             ))}
             {loading && (

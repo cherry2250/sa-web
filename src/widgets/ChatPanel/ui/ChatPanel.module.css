@@ -59,11 +59,11 @@
 
 .aiMessage {
   align-self: flex-start;
-  background: #4f8cff;
+  background: #2a71f5;
   color: #fff;
   border-radius: 16px 16px 16px 4px;
   padding: 12px 20px;
-  max-width: 70%;
+  max-width: 90%;
   word-break: break-all;
   font-size: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
