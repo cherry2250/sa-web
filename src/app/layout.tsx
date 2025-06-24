@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/widgets/sidebar/ui/Sidebar";
+import { Header } from "@/widgets/header/ui/Header";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,7 +30,17 @@ export default function RootLayout({
       >
         <div style={{ display: "flex", height: "100vh" }}>
           <Sidebar />
-          <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              height: "100vh",
+            }}
+          >
+            <Header />
+            {children}
+          </div>
         </div>
       </body>
     </html>

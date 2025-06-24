@@ -26,9 +26,9 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
 
   return (
     <div className={styles.inputWrap}>
-      <button className={`${styles.iconBtn} ${styles.leftIcon}`} tabIndex={-1}>
+      {/* <button className={`${styles.iconBtn} ${styles.leftIcon}`} tabIndex={-1}>
         <PaperClipIcon width={20} height={20} />
-      </button>
+      </button> */}
       <input
         type="text"
         placeholder="type your prompt here"
@@ -37,7 +37,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <div className={styles.rightIcons}>
+      {/* <div className={styles.rightIcons}>
         <button className={styles.iconBtn} tabIndex={-1}>
           <MicIcon width={20} height={20} />
         </button>
@@ -54,7 +54,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
             style={{ transform: "rotate(-45deg)" }}
           />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

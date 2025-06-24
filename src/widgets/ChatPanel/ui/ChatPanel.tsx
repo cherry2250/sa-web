@@ -53,8 +53,7 @@ export const ChatPanel = () => {
     <div className={styles.panel}>
       <main className={styles.main}>
         {messages.length === 0 ? (
-          // 안내 영역 (처음에만 보임)
-          <div style={{ textAlign: "center" }}>
+          <div className={styles.centerArea}>
             <LogoIcon className={styles.logo} />
             <h2 className={styles.title}>
               How can we <span className={styles.highlight}>assist</span> you
@@ -67,22 +66,22 @@ export const ChatPanel = () => {
             </p>
           </div>
         ) : (
-          // 메시지 리스트 (대화가 시작되면 보임)
-          <div style={{ margin: "32px auto", maxWidth: 600 }}>
+          <div className={styles.messageList}>
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                style={{
-                  textAlign: msg.role === "user" ? "right" : "left",
-                  margin: "8px 0",
-                  color: msg.role === "user" ? "#a78bfa" : "#fff",
-                  wordBreak: "break-all",
-                }}
+                className={
+                  msg.role === "user" ? styles.userMessage : styles.aiMessage
+                }
               >
                 {msg.text}
               </div>
             ))}
-            {loading && <div style={{ color: "#aaa" }}>AI 응답 중...</div>}
+            {loading && (
+              <div className={styles.aiMessage} style={{ opacity: 0.7 }}>
+                AI 응답 중...
+              </div>
+            )}
           </div>
         )}
       </main>

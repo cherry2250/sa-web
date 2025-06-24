@@ -1,48 +1,48 @@
 .inputWrap {
-  position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 16px;
-}
-.input {
-  background: transparent;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  padding: 16px 48px 16px 48px;
-  color: #fff;
-}
-.iconBtn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.2s;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.iconBtn:hover {
-  color: #fff;
-}
-.leftIcon {
-  left: 12px;
-}
-.rightIcons {
-  right: 12px;
-  display: flex;
-  gap: 8px;
-}
-.sendBtn {
-  background: #9333ea;
-  border-radius: 9999px;
-  padding: 8px;
-  color: #fff;
-  margin-left: 8px;
-  transition: background 0.2s;
-  border: none;
-  cursor: pointer;
-}
-.sendBtn:hover {
-  background: #7c2ae8;
-}
+    position: relative;
+    background: rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding: 16px;
+  }
+  .input {
+    background: transparent;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 9999px;
+    padding: 16px 48px 16px 48px;
+    color: #fff;
+  }
+  .iconBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.5);
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .iconBtn:hover {
+    color: #fff;
+  }
+  .leftIcon {
+    left: 12px;
+  }
+  .rightIcons {
+    right: 12px;
+    display: flex;
+    gap: 8px;
+  }
+  .sendBtn {
+    background: #9333ea;
+    border-radius: 9999px;
+    padding: 8px;
+    color: #fff;
+    margin-left: 8px;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .sendBtn:hover {
+    background: #7c2ae8;
+  }
