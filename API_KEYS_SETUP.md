@@ -4,6 +4,31 @@
 
 프로젝트 루트에 `.env.local` 파일을 생성하고 다음과 같이 API Key를 설정하세요:
 
+```bash
+# API Base URL
+NEXT_PUBLIC_API_BASE_URL=https://api.abclab.ktds.com/v1
+
+# API Keys for different pages
+NEXT_PUBLIC_KOS_SA_API_KEY=app-kp12R0vDySbir5GhcEexZm2m
+NEXT_PUBLIC_K_ICIS_SA_API_KEY=app-kp12R0vDySbir5GhcEexZm2m
+NEXT_PUBLIC_CM_API_KEY=app-kp12R0vDySbir5GhcEexZm2m
+NEXT_PUBLIC_B_MON_API_KEY=app-kp12R0vDySbir5GhcEexZm2m
+NEXT_PUBLIC_B_OS_API_KEY=app-kp12R0vDySbir5GhcEexZm2m
+```
+
+## API 설정
+
+### Base URL
+
+- **환경변수**: `NEXT_PUBLIC_API_BASE_URL`
+- **기본값**: `https://api.abclab.ktds.com/v1`
+- **설명**: API 서버의 기본 주소
+
+### Endpoints
+
+- **Chat Messages**: `/chat-messages`
+- **전체 URL**: `https://api.abclab.ktds.com/v1/chat-messages`
+
 ## 각 페이지별 API Key 매핑
 
 - **메인 페이지 (/)**: `NEXT_PUBLIC_KOS_SA_API_KEY`

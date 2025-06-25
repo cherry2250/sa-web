@@ -59,7 +59,7 @@
 
 .aiMessage {
   align-self: flex-start;
-  background: #2a71f5;
+  background: #002c7f;
   color: #fff;
   border-radius: 16px 16px 16px 4px;
   padding: 12px 20px;
@@ -100,4 +100,67 @@
 
 .aiMessage :global(p) {
   line-height: 1.7;
+}
+
+.userIdWarning {
+  color: #fbbf24;
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.userIdSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.setUserIdButton {
+  background: #a855f7;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.setUserIdButton:hover {
+  background: #9333ea;
+}
+
+.currentUserInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.currentUserText {
+  color: #aaa;
+  font-size: 14px;
+  margin: 0;
+}
+
+.currentUserId {
+  color: #a855f7;
+  font-weight: 500;
+}
+
+.changeUserIdButton {
+  background: #333;
+  border: 1px solid #4a4a4a;
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.changeUserIdButton:hover {
+  background: #444;
 }

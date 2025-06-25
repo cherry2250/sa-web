@@ -1,3 +1,5 @@
+import { getApiUrl } from "@/shared/config/apiConfig";
+
 export type ChatRequest = {
   query: string;
   user: string;
@@ -24,18 +26,15 @@ export async function sendAgentMessageStreaming(
   onError?: (err: any) => void
 ) {
   try {
-    console.log("bpdy ", JSON.stringify(body));
-    const response = await fetch(
-      "https://api.abclab.ktds.com/v1/chat-messages",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify(body),
-      }
-    );
+    console.log("body ", JSON.stringify(body));
+    const response = await fetch(getApiUrl("chat-messages"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+    });
 
     if (!response.body) throw new Error("No response body");
 

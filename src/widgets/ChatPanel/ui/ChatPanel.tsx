@@ -3,21 +3,23 @@ import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./ChatPanel.module.css";
 import { ChatInput } from "@/features/ChatInput";
+import { UserIdModal } from "@/features/UserIdModal";
 import { LogoIcon } from "@/shared/assets/icons";
 import { sendAgentMessageStreaming } from "@/shared/lib/aiAgentApi";
+import { useUserStore } from "@/shared/store/userStore";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
 import "highlight.js/styles/atom-one-dark.css";
 
-const user = "test1234";
-
 interface ChatPanelProps {
   apiKey: string;
 }
 
 export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
+  const { userId } = useUserStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("General");
   const [messages, setMessages] = useState<
     { role: "user" | "ai"; text: string }[]
@@ -32,6 +34,11 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
   }, [messages, loading]);
 
   const handleSend = (message: string) => {
+    if (!userId) {
+      setIsModalOpen(true);
+      return;
+    }
+
     setMessages((prev) => [...prev, { role: "user", text: message }]);
     setLoading(true);
 
@@ -39,7 +46,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       apiKey,
       {
         query: message,
-        user,
+        user: userId,
         conversation_id: "",
         response_mode: "streaming",
         files: [],
@@ -58,10 +65,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       () => {
         setMessages((prev) => [
           ...prev,
-          {
-            role: "ai",
-            text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
-          },
+          { role: "ai", text: "에러가 발생했습니다." },
         ]);
         setLoading(false);
       }
@@ -83,6 +87,32 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
             <p className={styles.desc}>
               어떤 도움이 필요하신가요? 궁금한 부분을 질문해주세요!
             </p>
+            {!userId ? (
+              <div className={styles.userIdSection}>
+                <p className={styles.userIdWarning}>
+                  💡 사용자 ID를 설정하면 대화를 시작할 수 있습니다.
+                </p>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className={styles.setUserIdButton}
+                >
+                  사용자 ID 설정
+                </button>
+              </div>
+            ) : (
+              <div className={styles.currentUserInfo}>
+                <p className={styles.currentUserText}>
+                  현재 사용자:{" "}
+                  <span className={styles.currentUserId}>{userId}</span>
+                </p>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className={styles.changeUserIdButton}
+                >
+                  변경
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className={styles.messageList} ref={messageListRef}>
@@ -124,6 +154,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
         )}
       </main>
       <ChatInput onSend={handleSend} />
+      <UserIdModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
