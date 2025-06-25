@@ -13,7 +13,7 @@ export const useUserStore = create<UserState>()(
       userId: "",
       setUserId: (userId: string) => set({ userId }),
       clearUserId: () => set({ userId: "" }),
-    }),
+    }), //storage
     {
       name: "user-storage", // localStorage에 저장될 키 이름
     }
