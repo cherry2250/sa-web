@@ -11,10 +11,13 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github.css";
 import "highlight.js/styles/atom-one-dark.css";
 
-const apiKey = "app-kp12R0vDySbir5GhcEexZm2m";
 const user = "test1234";
 
-export const ChatPanel = () => {
+interface ChatPanelProps {
+  apiKey: string;
+}
+
+export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
   const [activeTab, setActiveTab] = useState("General");
   const [messages, setMessages] = useState<
     { role: "user" | "ai"; text: string }[]
@@ -55,7 +58,10 @@ export const ChatPanel = () => {
       () => {
         setMessages((prev) => [
           ...prev,
-          { role: "ai", text: "에러가 발생했습니다." },
+          {
+            role: "ai",
+            text: "오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+          },
         ]);
         setLoading(false);
       }

@@ -17,6 +17,6 @@ export const menuData = [
   },
   {
     label: "B-OS/S-GOV",
-    path: "/bos-sgov",
+    path: "/b-os",
   },
 ];

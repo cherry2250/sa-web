@@ -1,4 +1,5 @@
 import { ChatPanel } from "@/widgets/ChatPanel/ui/ChatPanel";
+import { getApiKey } from "@/shared/config/apiKeys";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
         flexDirection: "column",
       }}
     >
-      <ChatPanel />
+      <ChatPanel apiKey={getApiKey("KOS_SA")} />
     </div>
   );
 }
