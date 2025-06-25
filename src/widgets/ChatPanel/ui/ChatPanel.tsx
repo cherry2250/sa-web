@@ -7,6 +7,9 @@ import { UserIdModal } from "@/features/UserIdModal";
 import { LogoIcon } from "@/shared/assets/icons";
 import { sendAgentMessageStreaming } from "@/shared/lib/aiAgentApi";
 import { useUserStore } from "@/shared/store/userStore";
+import { useConversationStore } from "@/shared/store/conversationStore";
+import { usePageChange } from "@/shared/hooks/usePageChange";
+import { useRefreshDetection } from "@/shared/hooks/useRefreshDetection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -19,6 +22,7 @@ interface ChatPanelProps {
 
 export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
   const { userId } = useUserStore();
+  const { conversationId, setConversationId } = useConversationStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("General");
   const [messages, setMessages] = useState<
@@ -26,6 +30,10 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
   >([]);
   const [loading, setLoading] = useState(false);
   const messageListRef = useRef<HTMLDivElement>(null);
+
+  // 페이지 변경과 새로고침 감지
+  usePageChange();
+  useRefreshDetection();
 
   useEffect(() => {
     if (messageListRef.current) {
@@ -47,7 +55,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       {
         query: message,
         user: userId,
-        conversation_id: "",
+        conversation_id: conversationId || "", // conversation_id가 있으면 사용, 없으면 빈 문자열
         response_mode: "streaming",
         files: [],
         inputs: {},
@@ -68,6 +76,10 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
           { role: "ai", text: "에러가 발생했습니다." },
         ]);
         setLoading(false);
+      },
+      (newConversationId) => {
+        // 새로운 conversation_id를 받으면 저장
+        setConversationId(newConversationId);
       }
     );
   };

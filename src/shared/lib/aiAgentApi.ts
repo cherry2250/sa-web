@@ -14,7 +14,6 @@ export type ChatRequest = {
 };
 
 export type ChatResponse = {
-  // 실제 응답 구조에 맞게 타입 정의
   result: string;
 };
 
@@ -23,7 +22,8 @@ export async function sendAgentMessageStreaming(
   body: any,
   onMessage: (answer: string) => void,
   onEnd?: () => void,
-  onError?: (err: any) => void
+  onError?: (err: any) => void,
+  onConversationId?: (conversationId: string) => void
 ) {
   try {
     console.log("body ", JSON.stringify(body));
@@ -54,9 +54,9 @@ export async function sendAgentMessageStreaming(
             if (jsonStr.trim() === "[DONE]") continue;
             try {
               const eventObj = JSON.parse(jsonStr);
-              if (eventObj.conversation_id) {
+              if (eventObj.conversation_id && onConversationId) {
                 console.log("대화 ID:", eventObj.conversation_id);
-                // 필요하다면 상태로 저장해서 다음 요청에 사용
+                onConversationId(eventObj.conversation_id);
               }
               if (eventObj.event === "message" && eventObj.answer) {
                 aiMessage += eventObj.answer;

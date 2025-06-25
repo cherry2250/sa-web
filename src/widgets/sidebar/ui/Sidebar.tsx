@@ -1,8 +1,16 @@
+"use client";
 import { LogoIcon } from "@/shared/assets/icons";
 import styles from "./Sidebar.module.css";
 import Link from "next/link";
+import { useConversationStore } from "@/shared/store/conversationStore";
 
 export const Sidebar = () => {
+  const { startNewConversation } = useConversationStore();
+
+  const handleNewChat = () => {
+    startNewConversation();
+  };
+
   return (
     <aside className={styles.sidebar}>
       <a href={"/"}>
@@ -11,12 +19,14 @@ export const Sidebar = () => {
           <span className={styles.title}>SA-WEB</span>
         </div>
       </a>
-      <button className={styles.newChatButton}>+ Begin a New Chat</button>
+      <button className={styles.newChatButton} onClick={handleNewChat}>
+        + Begin a New Chat
+      </button>
       <input className={styles.search} placeholder="Search" />
       <hr></hr>
       <div className={styles.recentChats}>
         <div className={styles.chatItem}>최근 대화 이력</div>
-        <div className={styles.chatItem}>What’s the best approach...</div>
+        <div className={styles.chatItem}>What's the best approach...</div>
       </div>
 
       <div className={styles.footer}>

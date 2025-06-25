@@ -47,8 +47,8 @@
 
 .userMessage {
   align-self: flex-end;
-  background: #ffe57d;
-  color: #333;
+  background: #6f27ebd2;
+  color: #ffffff;
   border-radius: 16px 16px 4px 16px;
   padding: 12px 20px;
   max-width: 70%;
@@ -59,8 +59,8 @@
 
 .aiMessage {
   align-self: flex-start;
-  background: #002c7f;
-  color: #fff;
+  background: #3b3b3f;
+  color: #e0e0e0;
   border-radius: 16px 16px 16px 4px;
   padding: 12px 20px;
   max-width: 90%;
