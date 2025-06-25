@@ -78,7 +78,6 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
         setLoading(false);
       },
       (newConversationId) => {
-        // 새로운 conversation_id를 받으면 저장
         setConversationId(newConversationId);
       }
     );

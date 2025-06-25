@@ -34,3 +34,11 @@ const getEnvVarName = (key: ApiKeyType): string => {
   };
   return envVarMap[key];
 };
+
+export function getApiKeyByPath(pathname: string) {
+  if (pathname.startsWith("/b-mon")) return getApiKey("B_MON");
+  if (pathname.startsWith("/b-os")) return getApiKey("B_OS");
+  if (pathname.startsWith("/k-icis-sa")) return getApiKey("K_ICIS_SA");
+  if (pathname.startsWith("/cm")) return getApiKey("CM");
+  return getApiKey("KOS_SA");
+}

@@ -17,7 +17,7 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
-  color: #b388ff;
+  color: #b58aff;
 }
 .logo {
   width: 32px;
@@ -29,10 +29,11 @@
 }
 
 .newChatButton {
-  background-color: #2e2e2e;
+  background-color: #b58aff;
   border: none;
   border-radius: 8px;
   padding: 12px;
+
   color: white;
   text-align: left;
   cursor: pointer;
