@@ -15,9 +15,9 @@ export const getApiKey = (key: ApiKeyType): string => {
   const apiKey = API_KEYS[key];
   if (!apiKey) {
     throw new Error(
-      `API Key for ${key} is not configured. Please set ${getEnvVarName(
+      `${key}의 API KEY를 확인할 수 없습니다. ${getEnvVarName(
         key
-      )} in your .env.local file.`
+      )} env 파일을 확인하시기 바랍니다.`
     );
   }
   return apiKey;

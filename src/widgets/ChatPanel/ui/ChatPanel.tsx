@@ -8,8 +8,10 @@ import { LogoIcon } from "@/shared/assets/icons";
 import { sendAgentMessageStreaming } from "@/shared/lib/aiAgentApi";
 import { useUserStore } from "@/shared/store/userStore";
 import { useConversationStore } from "@/shared/store/conversationStore";
+import { useMessageStore } from "@/shared/store/messageStore";
 import { usePageChange } from "@/shared/hooks/usePageChange";
 import { useRefreshDetection } from "@/shared/hooks/useRefreshDetection";
+import { usePathname } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -23,23 +25,35 @@ interface ChatPanelProps {
 export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
   const { userId } = useUserStore();
   const { conversationId, setConversationId } = useConversationStore();
+  const {
+    messages: storeMessages,
+    isLoading: storeLoading,
+    clearMessages,
+  } = useMessageStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("General");
-  const [messages, setMessages] = useState<
+  const [newMessages, setNewMessages] = useState<
     { role: "user" | "ai"; text: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
   const messageListRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   // 페이지 변경과 새로고침 감지
   usePageChange();
   useRefreshDetection();
 
+  // pathname이 변경될 때 메시지 초기화
+  useEffect(() => {
+    clearMessages();
+    setNewMessages([]);
+  }, [pathname, clearMessages]);
+
   useEffect(() => {
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [messages, loading]);
+  }, [newMessages, loading, storeMessages]);
 
   const handleSend = (message: string) => {
     if (!userId) {
@@ -47,7 +61,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       return;
     }
 
-    setMessages((prev) => [...prev, { role: "user", text: message }]);
+    setNewMessages((prev) => [...prev, { role: "user", text: message }]);
     setLoading(true);
 
     sendAgentMessageStreaming(
@@ -62,7 +76,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       },
       (answer) => {
         // 실시간으로 메시지 업데이트
-        setMessages((prev) => {
+        setNewMessages((prev) => {
           if (prev.length && prev[prev.length - 1].role === "ai") {
             return [...prev.slice(0, -1), { role: "ai", text: answer }];
           }
@@ -71,7 +85,7 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
       },
       () => setLoading(false),
       () => {
-        setMessages((prev) => [
+        setNewMessages((prev) => [
           ...prev,
           { role: "ai", text: "에러가 발생했습니다." },
         ]);
@@ -83,10 +97,24 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
     );
   };
 
+  // 모든 메시지를 하나의 배열로 합치기
+  const allMessages = [
+    // store에서 가져온 기존 메시지들을 ChatPanel 형식으로 변환
+    ...storeMessages
+      .map((msg) => [
+        { role: "user" as const, text: msg.query },
+        { role: "ai" as const, text: msg.answer },
+      ])
+      .flat()
+      .filter((msg) => msg.text), // 빈 텍스트는 제거
+    // 새로운 메시지들
+    ...newMessages,
+  ];
+
   return (
     <div className={styles.panel}>
       <main className={styles.main}>
-        {messages.length === 0 ? (
+        {allMessages.length === 0 ? (
           <div className={styles.centerArea}>
             <Link href="/">
               <LogoIcon className={styles.logo} />
@@ -127,7 +155,12 @@ export const ChatPanel = ({ apiKey }: ChatPanelProps) => {
           </div>
         ) : (
           <div className={styles.messageList} ref={messageListRef}>
-            {messages.map((msg, idx) => (
+            {storeLoading && (
+              <div className={styles.aiMessage} style={{ opacity: 0.7 }}>
+                메시지를 불러오는 중...
+              </div>
+            )}
+            {allMessages.map((msg, idx) => (
               <div
                 key={idx}
                 className={

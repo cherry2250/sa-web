@@ -80,7 +80,12 @@
   gap: 8px;
   margin-bottom: auto;
 }
-
+.chatTitle {
+  background-color: #1c1c1c;
+  padding: 10px 12px;
+  color: #989898;
+  font-size: 13px;
+}
 .chatItem {
   background-color: #1c1c1c;
   padding: 10px 12px;
