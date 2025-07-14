@@ -55,3 +55,32 @@
 .dropdownItem:hover {
   background: #333;
 }
+
+/* .menuBtn, .desktopOnly, .mobileOnly 등 모바일 햄버거 메뉴 관련 스타일 제거 */
+
+@media (max-width: 600px) {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    height: 44px;
+    position: relative;
+  }
+  .dropdownBtn {
+    width: auto;
+    text-align: center;
+    font-size: 1rem;
+    padding: 8px 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dropdownList {
+    min-width: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.98rem;
+  }
+}

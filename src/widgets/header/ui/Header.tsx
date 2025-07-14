@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 import { menuData } from "../menuData";
+import { MenuIcon } from "@/shared/assets/icons";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
@@ -24,30 +25,23 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.left}>
-        <div className={styles.dropdown}>
-          <button
-            className={styles.dropdownBtn}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {selected.label}
-            <span className={styles.arrow}>▼</span>
-          </button>
-          {open && (
-            <ul className={styles.dropdownList}>
-              {menuData.map((item) => (
-                <li
-                  key={item.path}
-                  className={styles.dropdownItem}
-                  onClick={() => handleSelect(item)}
-                >
-                  {item.label}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+      <button className={styles.dropdownBtn} onClick={() => setOpen((v) => !v)}>
+        {selected.label}
+        <span className={styles.arrow}>▼</span>
+      </button>
+      {open && (
+        <ul className={styles.dropdownList}>
+          {menuData.map((item) => (
+            <li
+              key={item.path}
+              className={styles.dropdownItem}
+              onClick={() => handleSelect(item)}
+            >
+              {item.label}
+            </li>
+          ))}
+        </ul>
+      )}
     </header>
   );
 };

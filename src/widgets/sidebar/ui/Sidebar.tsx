@@ -11,6 +11,8 @@ import React, { useState, useEffect } from "react";
 import { getApiKeyByPath } from "@/shared/config/apiKeys";
 import { fetchConversations } from "@/shared/lib/fetchMessages";
 import { usePathname, useRouter } from "next/navigation";
+import { MenuIcon } from "@/shared/assets/icons";
+import { createPortal } from "react-dom";
 
 export const Sidebar = () => {
   const { startNewConversation, setConversationId } = useConversationStore();
@@ -20,6 +22,7 @@ export const Sidebar = () => {
   const [conversations, setConversations] = useState<any[]>([]);
   const pathname = usePathname();
   const router = useRouter();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const apiKey = getApiKeyByPath(pathname);
@@ -36,6 +39,11 @@ export const Sidebar = () => {
       console.log("Debug - API call skipped. Missing required values.");
     }
   }, [userId, pathname]);
+
+  useEffect(() => {
+    // 페이지 이동/새로고침 시 sidebar 닫기
+    setIsSidebarOpen(false);
+  }, [pathname]);
 
   const handleConversationClick = async (convId: string) => {
     const apiKey = getApiKeyByPath(pathname);
@@ -103,52 +111,147 @@ export const Sidebar = () => {
     }, 100);
   };
 
-  return (
-    <aside className={styles.sidebar}>
-      <a href={"/"}>
-        <div className={styles.logoTitleRow}>
-          <LogoIcon className={styles.logo} />
-          <span className={styles.title}>SA-WEB</span>
-        </div>
-      </a>
-      <button className={styles.newChatButton} onClick={handleNewChat}>
-        + Begin a New Chat
-      </button>
-      {/* <input className={styles.search} placeholder="Search" /> */}
-      <hr></hr>
-      <div className={styles.recentChats}>
-        <div className={styles.chatTitle}>최근 대화 이력</div>
-        {conversations.map((conv) => (
-          <div
-            className={styles.chatItem}
-            key={conv.id}
-            onClick={() => handleConversationClick(conv.id)}
-            style={{ cursor: "pointer" }}
-          >
-            {conv.name || conv.id}
-          </div>
-        ))}
-      </div>
+  // 모바일에서 햄버거 버튼 클릭 시 사이드바 오픈
+  const handleSidebarOpen = () => setIsSidebarOpen(true);
+  const handleSidebarClose = () => setIsSidebarOpen(false);
 
-      <div className={styles.footer}>
-        <span>{userId ? "접속 ID : " + userId : "ID를 입력해주세요"}</span>
-        <button
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            marginLeft: 8,
-          }}
-          onClick={() => setIsModalOpen(true)}
-          aria-label="사용자 변경 또는 등록"
-        >
-          <GearIcon width={20} height={20} />
-        </button>
+  // 모바일에서 사용자 ID 변경 버튼 클릭 시 sidebar 닫고 모달 오픈
+  const handleUserIdModalOpen = () => {
+    setIsModalOpen(true);
+    if (isMobile) setIsSidebarOpen(false);
+  };
+
+  // 모바일 여부 체크
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
+
+  // UserIdModal portal 렌더링
+  const userIdModal = isModalOpen
+    ? createPortal(
         <UserIdModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-        />
+        />,
+        typeof window !== "undefined" ? document.body : (null as any)
+      )
+    : null;
+
+  return (
+    <>
+      {/* 모바일 햄버거 버튼: sidebar가 열려있을 때는 숨김 */}
+      {!(isMobile && isSidebarOpen) && (
+        <button
+          className={styles.menuBtn + " " + styles.mobileOnly}
+          onClick={handleSidebarOpen}
+          aria-label="사이드바 열기"
+          style={{ position: "fixed", top: 8, left: 8, zIndex: 1200 }}
+        >
+          <MenuIcon width={28} height={28} />
+        </button>
+      )}
+      {/* 오버레이 + 사이드바 (모바일) */}
+      <div
+        className={
+          styles.sidebarOverlay + (isSidebarOpen ? " " + styles.open : "")
+        }
+        onClick={handleSidebarClose}
+      >
+        <aside
+          className={styles.sidebar + " " + styles.mobileSidebar}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className={styles.closeBtn}
+            onClick={handleSidebarClose}
+            aria-label="사이드바 닫기"
+          >
+            ×
+          </button>
+          {/* 기존 사이드바 내용 */}
+          <a href={"/"}>
+            <div className={styles.logoTitleRow}>
+              <LogoIcon className={styles.logo} />
+              <span className={styles.title}>SA-WEB</span>
+            </div>
+          </a>
+          <button className={styles.newChatButton} onClick={handleNewChat}>
+            + Begin a New Chat
+          </button>
+          <hr></hr>
+          <div className={styles.recentChats}>
+            <div className={styles.chatTitle}>최근 대화 이력</div>
+            {conversations.map((conv) => (
+              <div
+                className={styles.chatItem}
+                key={conv.id}
+                onClick={() => handleConversationClick(conv.id)}
+                style={{ cursor: "pointer" }}
+              >
+                {conv.name || conv.id}
+              </div>
+            ))}
+          </div>
+          <div className={styles.footer}>
+            <span>{userId ? "접속 ID : " + userId : "ID를 입력해주세요"}</span>
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                marginLeft: 8,
+              }}
+              onClick={handleUserIdModalOpen}
+              aria-label="사용자 변경 또는 등록"
+            >
+              <GearIcon width={20} height={20} />
+            </button>
+            {/* UserIdModal을 sidebar 내부에서 제거 */}
+          </div>
+        </aside>
       </div>
-    </aside>
+      {/* 데스크탑 사이드바 */}
+      <aside className={styles.sidebar + " " + styles.desktopOnly}>
+        <a href={"/"}>
+          <div className={styles.logoTitleRow}>
+            <LogoIcon className={styles.logo} />
+            <span className={styles.title}>SA-WEB</span>
+          </div>
+        </a>
+        <button className={styles.newChatButton} onClick={handleNewChat}>
+          + Begin a New Chat
+        </button>
+        <hr></hr>
+        <div className={styles.recentChats}>
+          <div className={styles.chatTitle}>최근 대화 이력</div>
+          {conversations.map((conv) => (
+            <div
+              className={styles.chatItem}
+              key={conv.id}
+              onClick={() => handleConversationClick(conv.id)}
+              style={{ cursor: "pointer" }}
+            >
+              {conv.name || conv.id}
+            </div>
+          ))}
+        </div>
+        <div className={styles.footer}>
+          <span>{userId ? "접속 ID : " + userId : "ID를 입력해주세요"}</span>
+          <button
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              marginLeft: 8,
+            }}
+            onClick={handleUserIdModalOpen}
+            aria-label="사용자 변경 또는 등록"
+          >
+            <GearIcon width={20} height={20} />
+          </button>
+          {/* UserIdModal을 sidebar 내부에서 제거 */}
+        </div>
+      </aside>
+      {/* 전역에 UserIdModal portal 렌더 */}
+      {userIdModal}
+    </>
   );
 };

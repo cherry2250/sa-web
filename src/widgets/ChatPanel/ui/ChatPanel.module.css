@@ -164,3 +164,47 @@
 .changeUserIdButton:hover {
   background: #444;
 }
+
+@media (max-width: 600px) {
+  .panel {
+    padding: 0 12px;
+  }
+  .main {
+    padding: 0 8px;
+  }
+  .messageList {
+    padding: 12px 0;
+    max-width: 100vw;
+    gap: 8px;
+  }
+  .userMessage,
+  .aiMessage {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    max-width: 95%;
+  }
+  .logo {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  .desc {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+    max-width: 95vw;
+  }
+  .setUserIdButton,
+  .changeUserIdButton {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px 0;
+  }
+  .currentUserInfo,
+  .userIdSection {
+    gap: 8px;
+  }
+}
