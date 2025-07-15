@@ -35,5 +35,4 @@ body {
     "Malgun Gothic", "맑은 고딕", "돋움", Arial, Helvetica, sans-serif;
   position: relative;
   overflow: hidden;
-  height: calc(var(--vh, 1vh) * 100);
 }
