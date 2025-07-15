@@ -25,6 +25,7 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
+    <div className={styles.dropdown}>
       <button className={styles.dropdownBtn} onClick={() => setOpen((v) => !v)}>
         {selected.label}
         <span className={styles.arrow}>▼</span>
@@ -42,6 +43,7 @@ export const Header = () => {
           ))}
         </ul>
       )}
-    </header>
+    </div>
+  </header>
   );
 };
